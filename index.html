@@ -33,7 +33,7 @@
       <a class="btn btn-primary" aria-current="page" href="#">Active</a>
     </li>
     <li class="nav-item p-2">
-      <a class="btn btn-primary" aria-current="page" href="#" @click="uploadproducts()">Upload</a>
+      <a class="btn btn-primary" aria-current="page" href="#" @click="uploadproducts()"><i class="fa-solid fa-bars-staggered"></i> Upload</a>
     </li>
     <li class="nav-item p-2">
   </ul>
@@ -150,6 +150,7 @@
       function addoperation(){
         liste.value.push(onelist.value)
         onelist.value = {'id':id,'quantity':quantity,'product':'','price':'','total price':'','productimage':''}
+        emptyonelist()
       }
       function quantityAdd() {
         liste.value = liste.value.filter(operation => operation.product != onelist.value.product)
@@ -163,8 +164,11 @@
       function showOperation() {
         productliste.value = productliste.value.filter(OneProduct => OneProduct.product != onelist.value.product) 
       }
+      function emptyonelist(){
+        onelist.value = {'id':id,'quantity':quantity,'product':'','price':'','total price':'','productimage':''}
+      }
       return {
-        id,liste,productliste,onelist,price,quantity,Products,uploadlist,showOperation,uploadproducts,show,addoperation,quantityAdd
+        id,liste,productliste,onelist,price,quantity,Products,uploadlist,showOperation,uploadproducts,show,addoperation,quantityAdd,emptyonelist
       }
     }
   }).mount("#app")
