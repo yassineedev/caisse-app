@@ -44,14 +44,14 @@
   <!--  test cards -->
     <div class="row row-cols-1 row-cols-md-3 g-4 py-2">
         <div class="col" v-for="(OneProduct, index) in productliste" :key="index">
-            <div class="card rounded-4" @submit.prevent="addoperation()" @click="addoperation(),quantity++,show(OneProduct)">
+            <div class="card rounded-4" @submit.prevent="addoperation()">
                 <img :src="OneProduct.productimage" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title" v-model="onelist.product"> {{OneProduct.product}} </h5>
                 </div>
                 <div class="mb-5 d-flex justify-content-around">
                     <h3 v-model="onelist.price">{{OneProduct.price}}$ </h3>
-                    <button type="submit" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModaln" @click="show(OneProduct)"><i class="fa-solid fa-plus"></i></button>
+                    <button type="submit" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModaln" @click="show(OneProduct),addoperation(),quantity++"><i class="fa-solid fa-plus"></i></button>
                 </div>
             </div>
         </div>
