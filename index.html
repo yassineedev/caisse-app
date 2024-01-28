@@ -22,7 +22,7 @@
   </head>
 
   <body>
-   <div class="container" id="app">
+   <div class="" id="app">
     <!-- navbar -->
   <nav class="navbar bg-dark border-bottom border-body justify-content-center p-2" data-bs-theme="dark">
     <ul class="nav">
@@ -39,9 +39,35 @@
   </ul>
   </nav>
   <!-- products & factures -->
-  <div class="d-flex justify-content-between " style="padding: 30px;">
+  <div class="d-flex justify-content-between " style="padding: 10px;">
     <div class="container py-2">
-  <!--  test cards -->
+      <section class="py-5 bg-dark container">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center py-3">
+                <div class="col mb-5" v-for="(OneProduct, index) in productliste" :key="index">
+                    <div class="card h-100" @submit.prevent="addoperation()">
+                        <!-- Product image-->
+                        <img class="card-img-top" :src="OneProduct.productimage" alt="...">
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder" v-model="onelist.product">{{OneProduct.product}}</h5>
+                                <!-- Product price-->
+                                <span v-model="onelist.price">{{OneProduct.price}}$</span>
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="d-flex justify-content-between">
+                              <button type="submit" class="btn btn-success my-2 btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModaln" @click="show(OneProduct),removequantity()"><i class="fa-solid fa-minus"></i></button>
+                              <button type="submit" class="btn btn-success my-2 btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModaln" @click="show(OneProduct),addoperation()"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+      </section>          
+  <!--  test cards 
     <div class="row row-cols-1 row-cols-md-3 g-4 py-2 container">
         <div class="col" v-for="(OneProduct, index) in productliste" :key="index">
             <div class="card rounded-4" @submit.prevent="addoperation()">
@@ -55,7 +81,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
   </div> 
     <!-- facture -->
     <div class="list-group w-50 container py-2 bg-dark">
@@ -129,27 +155,39 @@
     const  {createApp , ref,computed,watch }= Vue
     createApp ({
       setup() {
+      //quantity value which change when we add the same operation
       const quantity = ref(1)
+      //the box where we going to stock Operation
       const liste = ref(
         []
         )
-        const productliste = ref([])
+      //the box where we going to stock Products  
+      const productliste = ref([])
+      //onelist is structure of liste and productliste  
       const onelist = ref({'quantity':quantity.value,'product':'','price':'','total price':'','productimage':''})
+      //products liste it's working when we use upload
       const Products = ref([
-        {'quantity':quantity.value,'product':'Coffe','price':'2','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'Capcake','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'caapo','price':'2','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'Soda','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
+        {'quantity':quantity.value,'product':'Cappuccino','price':'2','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
+        {'quantity':quantity.value,'product':'Latte','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
+        {'quantity':quantity.value,'product':'Frappuccino','price':'2','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
+        {'quantity':quantity.value,'product':'Mocha','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
+        {'quantity':quantity.value,'product':'Americano','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
+        {'quantity':quantity.value,'product':'Irish Coffee','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
+        {'quantity':quantity.value,'product':'Long Black','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
+        {'quantity':quantity.value,'product':'Doppio','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
         
       ])
+      //computed function which claculate the total of quantity * price
       const calculateTotalPrice = computed(() => {
         return liste.value.reduce((total, operation) => {
           return total + operation.quantity * operation.price;
         }, 0);
       });
+      //show operation in the hide modal
       function show(OneProduct){
         onelist.value = OneProduct
       }
+      //addoperation function 
       function addoperation() {
         const existingIndex = liste.value.findIndex(operation => operation.product === onelist.value.product);
         
@@ -164,20 +202,36 @@
         onelist.value = {'quantity': quantity.value, 'product': '', 'price': '', 'total price': '', 'productimage': ''};
         emptyonelist();
       }
+
+      function removequantity() {
+        const existingIndex = liste.value.findIndex(operation => operation.product === onelist.value.product);
+      
+        if (existingIndex !== -1) {
+          // If the operation already exists, reduce the quantity
+          liste.value[existingIndex].quantity -= onelist.value.quantity;
+      
+          // If the quantity becomes zero or negative, remove the operation from the list
+          if (liste.value[existingIndex].quantity <= 0) {
+            liste.value.splice(existingIndex, 1);
+          }
+        } else {
+          //nothing here to do
+        }
+        }
+      //uploadlist it just a button which testing the liste if it's working 
       function uploadlist() {
         liste.value = Products.value
       }
+      //uploadproducts = products that we have in stock
       function uploadproducts() {
         productliste.value = Products.value
       }
-      function showOperation() {
-        productliste.value = productliste.value.filter(OneProduct => OneProduct.product != onelist.value.product) 
-      }
+      //function which empty the hidde modal 
       function emptyonelist(){
         onelist.value = {'quantity':quantity.value,'product':'','price':'','total price':'','productimage':''}
       }
       return {
-        liste,productliste,onelist,quantity,Products,uploadlist,showOperation,uploadproducts,show,addoperation,emptyonelist,calculateTotalPrice
+        liste,productliste,onelist,quantity,Products,uploadlist,uploadproducts,show,addoperation,removequantity,emptyonelist,calculateTotalPrice
       }
     }
   }).mount("#app")
