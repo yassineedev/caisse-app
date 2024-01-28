@@ -152,11 +152,12 @@
       }
       function addoperation() {
         const existingIndex = liste.value.findIndex(operation => operation.product === onelist.value.product);
-  
+        
         if (existingIndex !== -1) {
           // If the operation already exists, update the quantity
-          liste.value[existingIndex].quantity = onelist.value.quantity++;
-        } else {
+          liste.value[existingIndex].quantity += onelist.value.quantity;
+        }
+         else {
           // If the operation doesn't exist, add a new operation
           liste.value.push({...onelist.value});
         }
