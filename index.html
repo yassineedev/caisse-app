@@ -42,9 +42,9 @@
   <div class="d-flex justify-content-between " style="padding: 10px;">
     <div class="container py-2">
       <section class="py-5 bg-dark container">
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center py-3">
+            <div class="row gx-4 gx-lg-5 row-cols-3 row-cols-md-3 row-cols-xl-4 justify-content-center py-3">
                 <div class="col mb-5" v-for="(OneProduct, index) in productliste" :key="index">
-                    <div class="card h-100" @submit.prevent="addoperation()">
+                    <div class="card" @submit.prevent="addoperation()" style="height: 95%;">
                         <!-- Product image-->
                         <img class="card-img-top" :src="OneProduct.productimage" alt="...">
                         <!-- Product details-->
@@ -57,10 +57,10 @@
                             </div>
                         </div>
                         <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="card-footer p-4 pt-1 border-top-0 bg-transparent">
                             <div class="d-flex justify-content-between">
-                              <button type="submit" class="btn btn-success my-2 btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModaln" @click="show(OneProduct),removequantity()"><i class="fa-solid fa-minus"></i></button>
-                              <button type="submit" class="btn btn-success my-2 btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModaln" @click="show(OneProduct),addoperation()"><i class="fa-solid fa-plus"></i></button>
+                              <button type="submit" class="btn btn-danger  rounded" data-bs-toggle="modal" data-bs-target="#exampleModaln" @click="show(OneProduct),removequantity()"><i class="fa-solid fa-minus"></i></button>
+                              <button type="submit" class="btn btn-success  rounded" data-bs-toggle="modal" data-bs-target="#exampleModaln" @click="show(OneProduct),addoperation()"><i class="fa-solid fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
           <tr v-for="(operation, index) in liste" :key="index">
             <td> {{operation.product}} </td>
             <td><span class="badge bg-primary"> {{operation.price}}$ </span></td>
-            <th scope="row">{{operation.quantity}}</th>
+            <th scope="row">{{operation.quantity}}KG</th>
             <th scope="row"> <span class="badge bg-success">{{operation.price * operation.quantity}}$</span> </th>
           </tr>
         </tbody>
@@ -167,14 +167,14 @@
       const onelist = ref({'quantity':quantity.value,'product':'','price':'','total price':'','productimage':''})
       //products liste it's working when we use upload
       const Products = ref([
-        {'quantity':quantity.value,'product':'Cappuccino','price':'2','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'Latte','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'Frappuccino','price':'2','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'Mocha','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'Americano','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'Irish Coffee','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'Long Black','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
-        {'quantity':quantity.value,'product':'Doppio','price':'1','total price':'','productimage': 'https://plus.unsplash.com/premium_photo-1675435644687-562e8042b9db?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29mZmVlJTIwcGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D'},
+        {'quantity':quantity.value,'product':'Strawberry','price':'2','total price':'','productimage': '/img/1.png'},
+        {'quantity':quantity.value,'product':'Onion','price':'1','total price':'','productimage': '/img/2.png'},
+        {'quantity':quantity.value,'product':'Tomatoes','price':'2','total price':'','productimage': '/img/3.png'},
+        {'quantity':quantity.value,'product':'Eggplant','price':'1','total price':'','productimage': '/img/4.png'},
+        {'quantity':quantity.value,'product':'Americano','price':'1','total price':'','productimage': '/img/5.png'},
+        {'quantity':quantity.value,'product':'Irish Coffee','price':'1','total price':'','productimage': '/img/6.png'},
+        {'quantity':quantity.value,'product':'Parsley','price':'1','total price':'','productimage': '/img/7.png'},
+        {'quantity':quantity.value,'product':'cucurbita','price':'1','total price':'','productimage': '/img/8.png'},
         
       ])
       //computed function which claculate the total of quantity * price
