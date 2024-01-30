@@ -8,7 +8,8 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <!-- Fontawesome -->
+    <!-- HTML2PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.0/html2pdf.bundle.js"></script>    <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- vue js cdn -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -27,10 +28,10 @@
   <nav class="navbar bg-dark border-bottom border-body justify-content-center p-2" data-bs-theme="dark">
     <ul class="nav">
     <li class="nav-item p-2">
-      <a class="btn btn-primary " @click="uploadlist()" ><i class="fa-solid fa-circle-up"></i></a>
+      <a class="btn btn-primary "><i class="fa-solid fa-circle-up"></i> not working</a>
     </li>
     <li class="nav-item p-2">
-      <a class="btn btn-primary" aria-current="page" href="#">Active</a>
+      <a class="btn btn-primary" aria-current="page" href="#"  @click="exportTableToPDF">SAID</a>
     </li>
     <li class="nav-item p-2">
       <a class="btn btn-primary" aria-current="page" href="#" @click="uploadproducts()"><i class="fa-solid fa-bars-staggered"></i> Upload</a>
@@ -84,8 +85,8 @@
     </div>-->
   </div> 
     <!-- facture -->
-    <div class="list-group w-50 container py-2 bg-dark">
-      <div class="container">
+    <div class="list-group w-50 container py-2 bg-dark" id="table">
+      <div class="container" >
       <table class="table ">
         <thead>
           <tr>
@@ -118,7 +119,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form @submit.prevent="addoperation(),quantity++">
+            <form @submit.prevent="addoperation()">
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">price:</label>
                 <input type="price" class="form-control" id="recipient-name" disabled v-model="onelist.price">
@@ -150,11 +151,36 @@
       integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
       crossorigin="anonymous"
     ></script>
+    <script src=""></script>
     <!-- vue script -->
     <script> 
     const  {createApp , ref,computed,watch }= Vue
+    const usePDFExport = () => {
+      const saveAsPDF = (elementId, fileName) => {
+        const element = document.getElementById("table");
+
+        if (element) {
+          html2pdf(element, {
+            margin: 10,
+            filename: fileName,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          }).then((pdf) => {
+            pdf.output('blob').then((blob) => {
+              saveAs(blob, fileName);
+            });
+          });
+        } else {
+          console.error(`Element with ID ${"table"} not found.`);
+        }
+      };
+
+      return { saveAsPDF };
+    };
     createApp ({
       setup() {
+        const { saveAsPDF } = usePDFExport();
       //quantity value which change when we add the same operation
       const quantity = ref(1)
       //the box where we going to stock Operation
@@ -177,6 +203,9 @@
         {'quantity':quantity.value,'product':'cucurbita','price':'1','total price':'','productimage': '/img/8.png'},
         
       ])
+      const exportTableToPDF = () => {
+        saveAsPDF('tableContent', 'table.pdf');
+      };
       //computed function which claculate the total of quantity * price
       const calculateTotalPrice = computed(() => {
         return liste.value.reduce((total, operation) => {
@@ -231,7 +260,7 @@
         onelist.value = {'quantity':quantity.value,'product':'','price':'','total price':'','productimage':''}
       }
       return {
-        liste,productliste,onelist,quantity,Products,uploadlist,uploadproducts,show,addoperation,removequantity,emptyonelist,calculateTotalPrice
+        exportTableToPDF,liste,productliste,onelist,quantity,Products,uploadlist,uploadproducts,show,addoperation,removequantity,emptyonelist,calculateTotalPrice
       }
     }
   }).mount("#app")
