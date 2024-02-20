@@ -29,13 +29,13 @@
   <nav class="navbar bg-dark border-bottom border-body justify-content-center p-2" data-bs-theme="dark">
     <ul class="nav">
     <li class="nav-item p-2">
-      <a class="btn btn-primary "><i class="fa-solid fa-circle-up"></i> not working</a>
+      <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-circle-up"></i> not working</a>
     </li>
     <li class="nav-item p-2">
       <a class="btn btn-primary" aria-current="page" href="#"  @click="exportTableToPDF">Download Bill</a>
     </li>
     <li class="nav-item p-2">
-      <a class="btn btn-primary" aria-current="page" href="#" @click="uploadproducts()"><i class="fa-solid fa-bars-staggered"></i> Upload</a>
+      <a class="btn btn-primary" aria-current="page" href="#" ><i class="fa-solid fa-bars-staggered"></i> Test</a>
     </li>
     <li class="nav-item p-2">
   </ul>
@@ -45,8 +45,8 @@
     <div class="container py-2">
       <section class="py-5 bg-dark container">
             <div class="row gx-4 gx-lg-5 row-cols-3 row-cols-md-3 row-cols-xl-4 justify-content-center py-3">
-                <div class="col mb-5" v-for="(OneProduct, index) in productliste" :key="index">
-                    <div class="card" @submit.prevent="addoperation()" style="height: 95%;">
+                <div class="col mb-5" v-for="(OneProduct, index) in Products" :key="index  ">
+                    <div class="card" style="height: 95%;">
                         <!-- Product image-->
                         <img class="card-img-top" :src="OneProduct.productimage" alt="...">
                         <!-- Product details-->
@@ -86,7 +86,7 @@
     </div>-->
   </div> 
     <!-- facture -->
-    <div class="list-group w-50 container py-2 bg-dark" id="table">
+    <div class="list-group w-50 container py-2 bg-dark">
       <div class="container" >
       <table class="table ">
         <thead>
@@ -110,6 +110,111 @@
   <div class="container d-flex justify-content-center">
   <h5 class="text-white text-center text-bg-success p-2 w-75 rounded-3">{{calculateTotalPrice}}$</h5>
   </div>
+    </div>
+    <!-- Bill model -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+    
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Modal Heading</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="container" id="table">
+              <div class="row">
+                      <div class="col-lg-12">
+                          <div class="card">
+                              <div class="card-body">
+                                  <div class="invoice-title">
+                                      <h4 class="float-end font-size-15">Invoice #DS0204 <span class="badge bg-success font-size-12 ms-2">Paid</span></h4>
+                                      <div class="mb-4">
+                                         <h2 class="mb-1 text-muted">Bootdey.com</h2>
+                                      </div>
+                                      <div class="text-muted">
+                                          <p class="mb-1">3184 Spruce Drive Pittsburgh, PA 15201</p>
+                                          <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i> xyz@987.com</p>
+                                          <p><i class="uil uil-phone me-1"></i> 012-345-6789</p>
+                                      </div>
+                                  </div>
+              
+                                  <hr class="my-4">
+              
+                                  <div class="row">
+                                      <div class="col-sm-6">
+                                          <div class="text-muted">
+                                              <h5 class="font-size-16 mb-3">Billed To:</h5>
+                                              <h5 class="font-size-15 mb-2">Preston Miller</h5>
+                                              <p class="mb-1">4068 Post Avenue Newfolden, MN 56738</p>
+                                              <p class="mb-1">PrestonMiller@armyspy.com</p>
+                                              <p>001-234-5678</p>
+                                          </div>
+                                      </div>
+                                      <!-- end col -->
+                                      <div class="col-sm-6">
+                                          <div class="text-muted text-sm-end">
+                                              <div>
+                                                  <h5 class="font-size-15 mb-1">Invoice No:</h5>
+                                                  <p>#DZ0112</p>
+                                              </div>
+                                              <div class="mt-4">
+                                                  <h5 class="font-size-15 mb-1">Invoice Date:</h5>
+                                                  <p>{{date}}</p>
+                                              </div>
+                                              <div class="mt-4">
+                                                  <h5 class="font-size-15 mb-1">Order No:</h5>
+                                                  <p>#1123456</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <!-- end col -->
+                                  </div>
+                                  <!-- end row -->
+                                  
+                                  <div class="py-2">
+                                      <h5 class="font-size-15">Order Summary</h5>
+              
+                                      <div class="table-responsive">
+                                          <table class="table align-middle table-nowrap table-centered mb-0">
+                                              <thead>
+                                                  <tr>
+                                                      <th>Item</th>
+                                                      <th>Price</th>
+                                                      <th>Quantity</th>
+                                                      <th class="text-end" style="width: 120px;">Total</th>
+                                                  </tr>
+                                              </thead><!-- end thead -->
+                                              <tbody>
+                                                  <tr v-for="(operation, index) in liste" :key="index">
+                                                      <td>
+                                                          <div>
+                                                              <h5 class="text-truncate font-size-14 mb-1">{{operation.product}}</h5>
+                                                          </div>
+                                                      </td>
+                                                      <td>$ {{operation.price}}</td>
+                                                      <td> {{operation.quantity}} </td>
+                                                      <td class="text-end">$ {{operation.quantity * operation.price}} </td>
+                                                  </tr>
+                                                  <!-- end tr -->
+                                                  <tr>
+                                                      <th scope="row" colspan="4" class="text-end">Sub Total</th>
+                                                      <td class="text-end">$ {{calculateTotalPrice}} </td>
+                                                  </tr>
+                                                  <!-- end tr -->
+                                              </tbody><!-- end tbody -->
+                                          </table><!-- end table -->
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div><!-- end col -->
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- model -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -188,6 +293,8 @@
       const liste = ref(
         []
         )
+      // date const methode 
+      const date = ref(new Date().toLocaleDateString());
       //the box where we going to stock Products  
       const productliste = ref([])
       //onelist is structure of liste and productliste  
@@ -213,6 +320,8 @@
           return total + operation.quantity * operation.price;
         }, 0);
       });
+      //computed 
+      //computed function which calculate Finle Total price after tax
       //show operation in the hide modal
       function show(OneProduct){
         onelist.value = OneProduct
@@ -261,7 +370,7 @@
         onelist.value = {'quantity':quantity.value,'product':'','price':'','total price':'','productimage':''}
       }
       return {
-        exportTableToPDF,liste,productliste,onelist,quantity,Products,uploadlist,uploadproducts,show,addoperation,removequantity,emptyonelist,calculateTotalPrice
+        exportTableToPDF,liste,productliste,date,onelist,quantity,Products,uploadlist,uploadproducts,show,addoperation,removequantity,emptyonelist,calculateTotalPrice
       }
     }
   }).mount("#app")
